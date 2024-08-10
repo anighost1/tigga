@@ -36,7 +36,7 @@ export const login = async (req, res) => {
         console.error(`[${new Date().toISOString()}]`, err)
         generateResponse(
             res,
-            err?.status || HttpStatus.BadRequest,
+            err?.status || HttpStatus.Unauthorized,
             err?.message
         )
     }
