@@ -29,8 +29,7 @@ app.get('/api/services', routeProtection, (req, res) => {
 
 app.use('/api/:service', routeProtection, (req, res, next) => {
     const serviceName = req.params.service;
-    const serviceUrl = microservices[serviceName];
-
+    const serviceUrl = microservices[serviceName]
     if (serviceUrl) {
         createProxyMiddleware({
             target: serviceUrl,
@@ -38,7 +37,10 @@ app.use('/api/:service', routeProtection, (req, res, next) => {
             pathRewrite: {
                 [`^/api/${serviceName}`]: '',
             },
-            logger: console
+            logger: console,
+            headers: {
+                user: JSON.stringify(req.user)
+            }
         })(req, res, next);
     } else {
         res.status(404).json({ error: `Service '${serviceName}' not found` });
